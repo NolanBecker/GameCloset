@@ -1,20 +1,15 @@
 package net.nolanbecker.gamecloset;
 
-import android.content.res.TypedArray;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,11 +27,11 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static Fragment currentFragment = null;
+
     ListView listView;
     WaveSwipeRefreshLayout swipeRefresh;
-    AddFloatingActionButton fab;
-    EditText editSearch;
-    View dummyView;
+    public static FlowingDrawer drawerLayout;
 
     List<Game> gameList;
 
@@ -45,63 +40,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = findViewById(R.id.listViewGames);
-        swipeRefresh = findViewById(R.id.swipeRefresh);
-        fab = findViewById(R.id.fab);
-        editSearch = findViewById(R.id.editSearch);
+//        listView = findViewById(R.id.listViewGames);
+//        swipeRefresh = findViewById(R.id.swipeRefresh);
+        drawerLayout = findViewById(R.id.drawerLayout);
 
         gameList = new ArrayList<>();
 
-        GetGames();
+        setupMenu();
 
-        swipeRefresh.setWaveARGBColor(255, 63, 81, 181);
-        swipeRefresh.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (editSearch.getVisibility() == View.VISIBLE) {
-                    editSearch.setVisibility(View.INVISIBLE);
-                    editSearch.clearFocus();
-                }
-                gameList.clear();
-                GetGames();
-            }
-        });
-
-        editSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if (!hasFocus) {
-                    imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
-                } else {
-                    imm.showSoftInput(editSearch, InputMethodManager.SHOW_IMPLICIT);
-                }
-            }
-        });
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editSearch.getVisibility() == View.INVISIBLE) {
-                    editSearch.setVisibility(View.VISIBLE);
-                    editSearch.setClickable(true);
-                    editSearch.requestFocus();
-                } else {
-                    editSearch.setVisibility(View.INVISIBLE);
-                    editSearch.setClickable(false);
-                    editSearch.clearFocus();
-                }
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                gameList.remove(position);
-                GameAdapter adapter = new GameAdapter(gameList, getApplicationContext(), swipeRefresh);
-                listView.setAdapter(adapter);
-            }
-        });
+//        GetGames();
+//
+//        swipeRefresh.setWaveARGBColor(255, 63, 81, 181);
+//        swipeRefresh.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                gameList.clear();
+//                GetGames();
+//            }
+//        });
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                gameList.remove(position);
+//                GameAdapter adapter = new GameAdapter(gameList, getApplicationContext(), swipeRefresh);
+//                listView.setAdapter(adapter);
+//            }
+//        });
 
     }
 
@@ -148,4 +113,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadFragment() {
+        // create FragmentManager
+        FragmentManager fm = getSupportFragmentManager();
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        // replace the FrameLayout with the new Fragment
+        fragmentTransaction.replace(R.id.mainFrameLayout, currentFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void setupMenu() {
+        FragmentManager fm = getSupportFragmentManager();
+        MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.id_container_menu);
+        if (mMenuFragment == null) {
+            mMenuFragment = new MenuListFragment();
+            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment).commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (drawerLayout.isMenuVisible()) {
+            drawerLayout.closeMenu();
+        } else if (fm.getBackStackEntryCount() > 0) {
+            if (!fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName().equals("games")) {
+                fm.beginTransaction().remove(currentFragment).commit();
+                fm.popBackStack();
+            } else {
+                finish();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

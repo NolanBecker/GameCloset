@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menu_group_1">
+        <item
+            android:id="@+id/menu_games"
+            android:title="My Games" />
+        <item
+            android:id="@+id/menu_search"
+            android:title="Find A Game" />
+    </group>
+    <group android:id="@+id/menu_group_2">
+        <item
+            android:id="@+id/menu_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/menu_about"
+            android:title="About" />
+    </group>
+</menu>

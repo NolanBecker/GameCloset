@@ -1,53 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mxn.soul.flowingdrawer_core.FlowingDrawer
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.nolanbecker.gamecloset.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.nolanbecker.gamecloset.MainActivity" >
+    android:id="@+id/drawerLayout"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    app:edPosition="1"
+    app:edMenuSize="260dp"
+    app:edMenuBackground="#dddddd">
 
-    <!--<android.support.v4.widget.SwipeRefreshLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/swipeRefresh">-->
 
-    <jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
+    <FrameLayout
+        android:id="@+id/mainFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/swipeRefresh">
+        android:layout_height="match_parent" />
 
-        <ListView
-            android:id="@+id/listViewGames"
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" >-->
+
+        <!--<jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/swipeRefresh">-->
+
+            <!--<ListView-->
+                <!--android:id="@+id/listViewGames"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"/>-->
+
+        <!--</jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>-->
+
+    <!--</RelativeLayout>-->
+
+    <!--menu-->
+    <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+        android:id="@+id/menulayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/id_container_menu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
 
-    </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
+    </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
 
-    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
-    <EditText
-        android:id="@+id/editSearch"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="33dp"
-        android:layout_toStartOf="@+id/fab"
-        android:layout_toLeftOf="@+id/fab"
-        android:hint="Search for a game"
-        android:inputType="text"
-        android:textSize="15sp"
-        android:visibility="invisible"
-        android:clickable="false"/>
-
-    <com.getbase.floatingactionbutton.AddFloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fab"
-        app:fab_plusIconColor="#fff"
-        android:layout_marginBottom="16dp"
-        app:fab_colorNormal="@color/colorPrimary"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"/>
-
-</RelativeLayout>
+</com.mxn.soul.flowingdrawer_core.FlowingDrawer>
