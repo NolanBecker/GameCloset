@@ -1,12 +1,20 @@
 package net.nolanbecker.gamecloset;
 
+import android.content.res.TypedArray;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.getbase.floatingactionbutton.AddFloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -24,7 +33,10 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
-    SwipeRefreshLayout swipeRefresh;
+    WaveSwipeRefreshLayout swipeRefresh;
+    AddFloatingActionButton fab;
+    EditText editSearch;
+    View dummyView;
 
     List<Game> gameList;
 
@@ -35,16 +47,59 @@ public class MainActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listViewGames);
         swipeRefresh = findViewById(R.id.swipeRefresh);
+        fab = findViewById(R.id.fab);
+        editSearch = findViewById(R.id.editSearch);
 
         gameList = new ArrayList<>();
 
         GetGames();
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefresh.setWaveARGBColor(255, 63, 81, 181);
+        swipeRefresh.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (editSearch.getVisibility() == View.VISIBLE) {
+                    editSearch.setVisibility(View.INVISIBLE);
+                    editSearch.clearFocus();
+                }
                 gameList.clear();
                 GetGames();
+            }
+        });
+
+        editSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (!hasFocus) {
+                    imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+                } else {
+                    imm.showSoftInput(editSearch, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editSearch.getVisibility() == View.INVISIBLE) {
+                    editSearch.setVisibility(View.VISIBLE);
+                    editSearch.setClickable(true);
+                    editSearch.requestFocus();
+                } else {
+                    editSearch.setVisibility(View.INVISIBLE);
+                    editSearch.setClickable(false);
+                    editSearch.clearFocus();
+                }
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                gameList.remove(position);
+                GameAdapter adapter = new GameAdapter(gameList, getApplicationContext(), swipeRefresh);
+                listView.setAdapter(adapter);
             }
         });
 

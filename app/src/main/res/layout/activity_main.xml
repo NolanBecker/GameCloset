@@ -4,11 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.nolanbecker.gamecloset.MainActivity">
+    tools:context="net.nolanbecker.gamecloset.MainActivity" >
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/swipeRefresh">-->
+
+    <jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/swipeRefresh">
 
         <ListView
@@ -16,6 +21,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
+
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
+    <EditText
+        android:id="@+id/editSearch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="33dp"
+        android:layout_toStartOf="@+id/fab"
+        android:layout_toLeftOf="@+id/fab"
+        android:hint="Search for a game"
+        android:inputType="text"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        android:clickable="false"/>
+
+    <com.getbase.floatingactionbutton.AddFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab"
+        app:fab_plusIconColor="#fff"
+        android:layout_marginBottom="16dp"
+        app:fab_colorNormal="@color/colorPrimary"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

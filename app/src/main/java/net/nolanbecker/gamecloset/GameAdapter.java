@@ -13,15 +13,17 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
+
 public class GameAdapter extends BaseAdapter {
 
     List<Game> gameList;
     Context context;
     String imgUrl;
-    SwipeRefreshLayout swipeRefresh;
+    WaveSwipeRefreshLayout swipeRefresh;
     private LayoutInflater layoutInflater;
 
-    public GameAdapter(List<Game> gameList, Context context, SwipeRefreshLayout swipeRefresh) {
+    public GameAdapter(List<Game> gameList, Context context, WaveSwipeRefreshLayout swipeRefresh) {
         layoutInflater = LayoutInflater.from(context);
         this.gameList = gameList;
         this.context = context;
