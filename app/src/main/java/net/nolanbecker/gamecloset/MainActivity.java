@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -17,12 +19,10 @@ import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 public class MainActivity extends AppCompatActivity {
 
     public static Fragment currentFragment = new GamesFragment();
+    public static FragmentManager fm;
 
-    ListView listView;
     WaveSwipeRefreshLayout swipeRefresh;
     public static FlowingDrawer drawerLayout;
-
-    List<Game> gameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawerLayout = findViewById(R.id.drawerLayout);
-
-        gameList = new ArrayList<>();
+        fm = getSupportFragmentManager();
 
         loadFragment();
 
@@ -40,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment() {
-        // create FragmentManager
-        FragmentManager fm = getSupportFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         // replace the FrameLayout with the new Fragment
@@ -50,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupMenu() {
-        FragmentManager fm = getSupportFragmentManager();
         MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.id_container_menu);
         if (mMenuFragment == null) {
             mMenuFragment = new MenuListFragment();
@@ -60,18 +56,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
         if (drawerLayout.isMenuVisible()) {
             drawerLayout.closeMenu();
         } else if (fm.getBackStackEntryCount() > 0) {
             if (!fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName().equals("games")) {
-                fm.beginTransaction().remove(currentFragment).commit();
+//                fm.beginTransaction().remove(currentFragment).commit();
                 fm.popBackStack();
             } else {
                 finish();
+                System.exit(0);
             }
         } else {
-            super.onBackPressed();
+            finish();
+            System.exit(0);
         }
     }
 }

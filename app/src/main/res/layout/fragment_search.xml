@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editSearch"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:inputType="text"
+        android:hint="Search for a game"
+        android:textSize="15dp"/>
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:textSize="15dp"
+        android:text="Search"
+        android:layout_toRightOf="@+id/editSearch"
+        android:layout_toEndOf="@+id/editSearch"/>
+
+    <TextView
+        android:id="@+id/txtError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editSearch"
+        android:layout_centerHorizontal="true"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editSearch"/>
+
+    <ProgressBar
+        android:id="@+id/refresh"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +23,7 @@ public class GameAdapter extends BaseAdapter {
     Context context;
     String imgUrl;
     WaveSwipeRefreshLayout swipeRefresh;
+    ProgressBar progressBar;
     private LayoutInflater layoutInflater;
 
     public GameAdapter(List<Game> gameList, Context context, WaveSwipeRefreshLayout swipeRefresh) {
@@ -28,6 +31,19 @@ public class GameAdapter extends BaseAdapter {
         this.gameList = gameList;
         this.context = context;
         this.swipeRefresh = swipeRefresh;
+    }
+
+    public GameAdapter(List<Game> gameList, Context context, ProgressBar progressBar) {
+        layoutInflater = LayoutInflater.from(context);
+        this.gameList = gameList;
+        this.context = context;
+        this.progressBar = progressBar;
+    }
+
+    public GameAdapter(List<Game> gameList, Context context) {
+        layoutInflater = LayoutInflater.from(context);
+        this.gameList = gameList;
+        this.context = context;
     }
 
     @Override
@@ -47,7 +63,7 @@ public class GameAdapter extends BaseAdapter {
 
     static class ViewHolder {
         ImageView imgThumb;
-        TextView textName, textId, textUpdate, textDelete;
+        TextView textName, textYear, textUpdate, textDelete;
     }
 
     @Override
@@ -58,8 +74,9 @@ public class GameAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.game_list, null);
             holder = new ViewHolder();
             holder.imgThumb = convertView.findViewById(R.id.imgThumb);
+            holder.imgThumb.setVisibility(View.VISIBLE);
             holder.textName = convertView.findViewById(R.id.textName);
-            holder.textId = convertView.findViewById(R.id.textId);
+            holder.textYear = convertView.findViewById(R.id.textYear);
             holder.textUpdate = convertView.findViewById(R.id.textUpdate);
             holder.textDelete = convertView.findViewById(R.id.textDelete);
             convertView.setTag(holder);
@@ -70,18 +87,24 @@ public class GameAdapter extends BaseAdapter {
         final Game game = gameList.get(position);
 
         holder.textName.setText(game.getName());
-        holder.textId.setText(String.valueOf(game.getId()));
+        if (game.getYear() == 0)
+            holder.textYear.setText("");
+        else
+            holder.textYear.setText(String.valueOf(game.getYear()));
         imgUrl = game.getThumb();
-        if (!imgUrl.isEmpty()) {
+        if (!imgUrl.equals("null") && !imgUrl.isEmpty()) {
             if (holder.imgThumb != null) {
-//                Toast.makeText(context, imgUrl, Toast.LENGTH_SHORT).show();
                 Picasso.get().load(imgUrl).into(holder.imgThumb);
+                holder.imgThumb.setVisibility(View.VISIBLE);
             }
         } else {
             holder.imgThumb.setVisibility(View.GONE);
         }
 
-        swipeRefresh.setRefreshing(false);
+        if (swipeRefresh != null)
+            swipeRefresh.setRefreshing(false);
+        if (progressBar != null)
+            progressBar.setVisibility(View.GONE);
 
         return convertView;
     }

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,70 +44,34 @@ public class GamesFragment extends Fragment {
 
         gameList = new ArrayList<>();
 
-        GetGames();
+        new GetGames(getActivity(), view, gameList, listView, swipeRefresh).execute();
 
         swipeRefresh.setWaveARGBColor(255, 63, 81, 181);
         swipeRefresh.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 gameList.clear();
-                GetGames();
+                new GetGames(getActivity(), view, gameList, listView, swipeRefresh).execute();
             }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                gameList.remove(position);
-                GameAdapter adapter = new GameAdapter(gameList, view.getContext(), swipeRefresh);
-                listView.setAdapter(adapter);
+                Toast.makeText(getContext(), gameList.get(position).getDesc(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                int paramId = gameList.get(position).getId();
+                new RemoveGame(getActivity(), view, gameList, listView, position, swipeRefresh).execute(paramId);
+                return true;
             }
         });
 
         return view;
-    }
-
-    private void GetGames() {
-        swipeRefresh.setRefreshing(true);
-        try {
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url(Api.URL_READ_GAMES).build();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    call.cancel();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    final String myResponse = response.body().string();
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                JSONObject json = new JSONObject(myResponse);
-                                JSONArray games = json.getJSONArray("games");
-                                for (int i=0; i<games.length(); i++) {
-                                    JSONObject obj = games.getJSONObject(i);
-                                    gameList.add(new Game(
-                                            obj.getInt("id"),
-                                            obj.getString("name"),
-                                            obj.getString("thumb")
-                                    ));
-                                }
-                                GameAdapter adapter = new GameAdapter(gameList, view.getContext(), swipeRefresh);
-                                listView.setAdapter(adapter);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

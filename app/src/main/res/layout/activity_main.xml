@@ -13,7 +13,6 @@
     app:edMenuSize="260dp"
     app:edMenuBackground="#dddddd">
 
-
     <FrameLayout
         android:id="@+id/mainFrameLayout"
         android:layout_width="match_parent"

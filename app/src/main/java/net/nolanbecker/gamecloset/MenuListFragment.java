@@ -28,9 +28,13 @@ public class MenuListFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 if (menuItem.getTitle().equals("My Games")) {
-                    MainActivity.drawerLayout.closeMenu(true);
                     MainActivity.currentFragment = new GamesFragment();
                     loadFragment("games");
+                    MainActivity.drawerLayout.closeMenu(true);
+                } else if (menuItem.getTitle().equals("Find A Game")) {
+                    MainActivity.currentFragment = new SearchFragment();
+                    loadFragment("search");
+                    MainActivity.drawerLayout.closeMenu(true);
                 } else {
                     Toast.makeText(getActivity(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
                 }
@@ -41,10 +45,8 @@ public class MenuListFragment extends Fragment {
     }
 
     private void loadFragment(String name) {
-        // create FragmentManager
-        FragmentManager fm = getActivity().getSupportFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        FragmentTransaction fragmentTransaction = MainActivity.fm.beginTransaction();
         // replace the FrameLayout with the new Fragment
         fragmentTransaction.replace(R.id.mainFrameLayout, MainActivity.currentFragment);
         fragmentTransaction.addToBackStack(name);
