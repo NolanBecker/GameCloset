@@ -1,6 +1,8 @@
 package net.nolanbecker.gamecloset;
 
-public class Game {
+import java.io.Serializable;
+
+public class Game implements Serializable{
 
     private int id, year, rank, age;
     private String name, imgUrl, desc, image, players, playtime, difficulty;
