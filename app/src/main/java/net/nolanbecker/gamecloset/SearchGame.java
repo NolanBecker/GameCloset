@@ -82,7 +82,6 @@ public class SearchGame {
                         0,
                         null,
                         null,
-                        null,
                         0,
                         null
                 ));

@@ -86,13 +86,12 @@ public class GetGames {
                                                 obj.getString("thumb"),
                                                 obj.getString("desc"),
                                                 obj.getInt("year"),
-                                                null,
-                                                0,
-                                                null,
-                                                null,
-                                                null,
-                                                0,
-                                                null
+                                                obj.getString("image"),
+                                                obj.getInt("rank"),
+                                                obj.getString("players"),
+                                                obj.getString("playtime"),
+                                                obj.getInt("age"),
+                                                obj.getString("difficulty")
                                         ));
                                     }
                                     GameAdapter adapter;

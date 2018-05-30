@@ -99,7 +99,7 @@ public class SearchFragment extends Fragment {
                 int rank = searchList.get(position).getRank();
                 String difficulty = searchList.get(position).getDifficulty();
 
-                HashMap hashMap = new HashMap();
+                HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("id", String.valueOf(paramId));
                 hashMap.put("name", name);
                 hashMap.put("thumb", thumb);

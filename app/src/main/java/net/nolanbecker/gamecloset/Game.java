@@ -3,10 +3,9 @@ package net.nolanbecker.gamecloset;
 public class Game {
 
     private int id, year, rank, age;
-    private String name, imgUrl, desc, image, players, recomPlayers, playtime, difficulty;
+    private String name, imgUrl, desc, image, players, playtime, difficulty;
 
-    public Game(int id, String name, String imgUrl, String desc, int year, String image, int rank, String players,
-                String recomPlayers, String playtime, int age, String difficulty) {
+    public Game(int id, String name, String imgUrl, String desc, int year, String image, int rank, String players, String playtime, int age, String difficulty) {
         this.id = id;
         this.name = name;
         if (imgUrl == null)
@@ -18,7 +17,6 @@ public class Game {
         this.image = image;
         this.rank = rank;
         this.players = players;
-        this.recomPlayers = recomPlayers;
         this.playtime = playtime;
         this.age = age;
         this.difficulty = difficulty;
@@ -60,10 +58,6 @@ public class Game {
         return players;
     }
 
-    public String getRecomPlayers() {
-        return recomPlayers;
-    }
-
     public String getPlaytime() {
         return playtime;
     }
@@ -99,10 +93,6 @@ public class Game {
 
     public void setPlayers(String players) {
         this.players = players;
-    }
-
-    public void setRecomPlayers(String recomPlayers) {
-        this.recomPlayers = recomPlayers;
     }
 
     public void setPlaytime(String playtime) {
