@@ -1,5 +1,6 @@
 package net.nolanbecker.gamecloset;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,10 +62,18 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 searchList.clear();
                 String search = editSearch.getText().toString();
-                if (!search.isEmpty())
+                if (!search.isEmpty()) {
+                    txtError.setText("");
                     new SearchGame(getActivity(), searchList, listViewSearch, searchRefresh).execute(search);
-                else
+                    try {
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
                     txtError.setText("Please enter the name of a game");
+                }
             }
         });
 
